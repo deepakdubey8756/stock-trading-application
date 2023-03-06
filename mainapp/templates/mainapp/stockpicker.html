@@ -1,0 +1,31 @@
+{% extends './base.html' %}
+
+{% block title %}
+<title > stockpicker </title>
+{% endblock %}
+
+{% block css %}
+<style>
+    .form-select{
+        height: 50vh !important;
+        outline: "none":
+    }
+</style>
+
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Live stock market</h1>
+    <form action="{% url 'stocktracker' %}">
+    <label for="stockpicker">Select your favorate stocks :</label>
+    <select class="form-select form-select-lg mb-3" multiple aria-label="multiple select example" name="stockpicker">
+        {% for i in stockpicker %}
+        <option value="{{i}}">{{i}}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <input type="submit" class="btn btn-primary" value="submit">
+</form>
+</div>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends './base.html' %}
+
+{% block title %}
+{% load myfilters %}
+<title > Tracker </title>
+{% endblock %}
+
+{% block css %}
+<style>
+  .red{
+    color: red;
+  }
+  .green{
+    color: green;
+  }
+</style>
+{% endblock %}
+{% block content %}
+<h1 class="text-center my-4">Live stock tracker </h1>
+<div class="container">
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">SNo.</th>
+            <th scope="col">Stock</th>
+            <th scope="col">Price</th>
+            <th scope="col">Close</th>
+            <th scope="col">Open</th>
+            <th scope="col">PE ratio</th>
+            <th scope="col">Market Cap</th>
+            <th scope="col">Volume</th>
+            <th scope="col">Change</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for key, value in data.items %}
+          <tr>
+            <th scope="row">{{forloop.counter}}</th>
+            <td>{{key}}</td>
+            <td id="{{key}}__price">{{value | get:"Quote Price"|floatformat:4}}</td>
+            <td id="{{key}}__close">{{value | get:"Previous Close"}}</td>
+            <td>{{value | get:"Open"}}</td>
+            <td>{{value | get:"PE Ratio (TTM)"}}</td>
+            <td>{{value | get:"Market Cap"}}</td>
+            <td>{{value | get:"Volume"}}</td>
+            <td id="{{key}}__change">
+              <script>
+                var price = document.getElementById("{{key}}__price").innerHTML;
+                var prevPrice = document.getElementById("{{key}}__close").innerHTML;
+                var change = Number((price - prevPrice).toFixed(4))
+                if(change > 0){
+                  document.getElementById("{{key}}__change").className = "green";
+                  document.getElementById("{{key}}__change").innerHTML = "+"+change;
+                }
+                else if(change < 0){
+                  document.getElementById("{{key}}__change").className = "red";
+                  document.getElementById("{{key}}__change").innerHTML = "-"+change;
+                }
+                else{
+                  document.getElementById("{{key}}__change").innerHTML = change;
+                }
+              </script>
+            </td> 
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+</div>
+{% endblock %}
